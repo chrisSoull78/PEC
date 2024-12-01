@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LENTES - Proyecto PEC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 60px;
+            height: 60px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .info {
+            padding: 20px;
+            text-align: center;
+        }
+        .banner {
+            width: 100%;
+            height: 300px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            animation: slide 15s infinite;
+        }
+        @keyframes slide {
+            0% {opacity: 1;}
+            20% {opacity: 0;}
+            25% {opacity: 1;}
+            100% {opacity: 1;}
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        .buttons a {
+            text-decoration: none;
+            color: white;
+            background-color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .buttons a img {
+            width: 20px;
+            height: 20px;
+        }
+        .buttons a:hover {
+            background-color: #4CAF50;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        .egg {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .egg img {
+            width: 40px;
+            height: 40px;
+            opacity: 0.3;
+        }
+        .egg:hover img {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="Logo1.png" alt="Logo Lentes">
+        </div>
+    </header>
+
+    <main>
+        <h1>LENTES</h1>
+        <div class="info">
+            <p>ESTE APARTADO TRATA SOBRE APOYAR A LOS ALUMNOS QUE TENGAN PROBLEMAS DE VISION.</p>
+        </div>
+        <div class="banner">
+            <img src="Lentes1.png" alt="Lentes Imagen 1" style="animation-delay: 0s;">
+            <img src="Lentes2.png" alt="Lentes Imagen 2" style="animation-delay: 3s;">
+            <img src="Lentes3.png" alt="Lentes Imagen 3" style="animation-delay: 6s;">
+            <img src="Lentes4.png" alt="Lentes Imagen 4" style="animation-delay: 9s;">
+            <img src="Lentes5.png" alt="Lentes Imagen 5" style="animation-delay: 12s;">
+        </div>
+        <div class="buttons">
+            <a href="juego.html"><img src="JuegoL.png" alt="Juego">Juego Divertido</a>
+            <a href="preguntas.html"><img src="Preg1.png" alt="Preguntas">Preguntas</a>
+            <a href="index.html"><img src="LogoP.png" alt="Regresar">Regresar</a>
+            <a href="involucrados.html"><img src="Inv1.png" alt="Involucrados">Involucrados</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>Creado por: [christian ivan 5B ] - Numero: [9769400]</p>
+    </footer>
+
+    <button class="egg" onclick="window.open('egg-video.html', '_blank')">
+        <img src="Egg.png" alt="EGG">
+    </button>
+</body>
+</html>

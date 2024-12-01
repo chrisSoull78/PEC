@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Divertido - Carrera de Palabras</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .game-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding: 0 20px;
+        }
+        .left-container {
+            width: 50%;
+            text-align: center;
+        }
+        .right-container {
+            width: 40%;
+            text-align: left;
+            padding-left: 20px;
+        }
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .input-box {
+            margin-top: 20px;
+        }
+        .input-box input {
+            padding: 10px;
+            font-size: 1.2rem;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        #wordList {
+            font-size: 1rem;
+            margin-top: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Juego Divertido - Carrera de Palabras</h1>
+    </header>
+    <div class="game-container">
+        <div class="left-container">
+            <div class="timer" id="timer">Tiempo: 60</div>
+            <p>Escribe tantas palabras relacionadas con "Lentes" como puedas en el tiempo.</p>
+            <div class="input-box">
+                <input type="text" id="wordInput" placeholder="Escribe una palabra..." autofocus />
+            </div>
+            <div class="message" id="message"></div>
+        </div>
+        <div class="right-container">
+            <p><strong>Palabras a Escribir:</strong></p>
+            <div id="wordList"></div>
+        </div>
+    </div>
+    <footer>
+        <p>Creado por: [christian ivan 5B] - Contacto: [9769400]</p>
+    </footer>
+    <script>
+        
+        const wordBank = [
+            "lentes", "gafas", "vista", "oculos", "cataratas", "prescripción", "retrovisor", "contacto", "armazón", 
+            "miopía", "hipermetropía", "astigmatismo", "presbicia", "ojos", "visión", "lentes de sol", "lentes ópticos", 
+            "optometría", "optometrista", "oftalmología", "oftalmólogo", "reflexión", "transparente", "luz", "corrección", 
+            "dioptrías", "graduación", "rayban", "aviador", "circular", "rectangular", "cat-eye", "depresión visual", 
+            "antirreflejo", "polarizado", "bifocal", "trifocal", "fotocromático", "lente de contacto", "lentes progresivos", 
+            "lente de seguridad", "lentes deportivos", "lentes de lectura", "lentes de noche", "tinte", "lente azul", 
+            "lente rojo", "gafas de protección", "lentes para niños", "lentes para adultos", "lentes para ancianos", 
+            "lentes para conducir", "gafas de sol", "lentes antideslumbrantes", "antivaho", "gafas de buceo", 
+            "lentes de esquí", "gafas de natación", "gafas de snowboard", "lentes de realidad virtual", "lentes 3D", 
+            "lentes ópticos de prescripción", "lentes flexibles", "gafas ópticas", "lentes multifocales", "gafas graduadas", 
+            "lentes de seguridad laboral", "lentes anti-UV", "lentes polarizados", "gafas deportivas", "protección ocular", 
+            "gafas para leer", "lentes con filtro de luz azul", "lentes con aumento", "lentes para ordenador", 
+            "lentes para ordenador", "lentes antifatiga", "visión borrosa", "gafas para niños con astigmatismo", 
+            "lentes para pantallas", "lentes progresivas", "lentes para miopía", "lentes para hipermetropía", 
+            "lentes para astigmatismo", "gafas para niños con miopía", "lentes para presbicia", "lentes de alta definición", 
+            "lentes a medida", "gafas de moda", "gafas de diseño", "gafas con estilo", "lentes con armazón metálico", 
+            "lentes con armazón plástico", "gafas con tecnología", "gafas con lentes de contacto", "gafas sin marco", 
+            "lentes sin marco", "lentes con forma especial", "lentes de lujo", "lentes baratos", "gafas para el sol", 
+            "gafas de sol para hombres", "gafas de sol para mujeres", "gafas de sol para niños", "gafas deportivas para correr", 
+            "gafas polarizadas para pesca", "gafas de sol deportivas", "gafas de sol graduadas", "gafas de sol vintage"
+        ];
+
+        let timer = 70;
+        let score = 0;
+        let gameInterval;
+        let timerInterval;
+        let wordIndex = 0;
+
+        function initializeWordList() {
+            const wordList = document.getElementById('wordList');
+            wordList.innerHTML = wordBank.map(word => `<div id="word_${word}" class="word">${word}</div>`).join('');
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer--;
+                document.getElementById('timer').textContent = `Tiempo: ${timer}`;
+                if (timer === 0) {
+                    clearInterval(timerInterval);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function submitWord() {
+            const wordInput = document.getElementById('wordInput');
+            const word = wordInput.value.trim().toLowerCase();
+            const wordElement = document.getElementById(`word_${word}`);
+
+            if (word && wordElement) {
+                wordElement.style.textDecoration = "line-through";
+                score++;
+                wordIndex++;
+                wordInput.value = '';
+                document.getElementById('message').textContent = `¡Bien hecho! Has sumado 1 punto.`;
+                checkCompletion();
+            } else {
+                document.getElementById('message').textContent = `Palabra incorrecta o ya completada. Intenta otra vez.`;
+            }
+        }
+
+        function checkCompletion() {
+            if (wordIndex >= wordBank.length) {
+                document.getElementById('message').textContent = `¡Completaste todas las palabras! Tu puntaje es: ${score}`;
+            }
+        }
+
+        function endGame() {
+            clearInterval(gameInterval);
+            document.getElementById('message').textContent = `¡El tiempo ha terminado! Tu puntaje es: ${score}`;
+            document.getElementById('wordInput').disabled = true;
+        }
+
+        document.getElementById('wordInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                submitWord();
+            }
+        });
+
+        initializeWordList();
+        startTimer();
+    </script>
+</body>
+</html>
